@@ -3,29 +3,132 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>NutriScan Pro - Food Calorie Counter</title>
+  <title>NutriScan Pro - AI-Powered Food Calorie Counter</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap">
 
   <style>
     *{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif;}
     :root{
-      --primary:#ff7e5f; --secondary:#feb47b;
-      --accent:#4cd964; --light:#ffffff; --dark:#1c1c1c; --gray:#777;
-      --warm-light:#fff5f2; --warm-dark:#33211d;
+      --primary:#4CAF50; --secondary:#8BC34A;
+      --accent:#FF9800; --light:#ffffff; --dark:#2E7D32; --gray:#757575;
+      --background:#fffef7; --card-bg:#fffff8;
+      --warm-light:#fff9e6; --warm-dark:#33691E;
+      --scan-btn:#FF5722;
+      --minimal-yellow:#fff9e6;
     }
     body{
-      background:linear-gradient(135deg,var(--primary),var(--secondary));
+      background:var(--background);
       min-height:100vh;display:flex;flex-direction:column;
     }
     .container{max-width:1300px;margin:auto;padding:20px;flex:1;}
     
+    /* Navigation */
+    .navbar {
+      background: var(--card-bg);
+      border-radius: 15px;
+      margin: 15px auto;
+      padding: 15px 25px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+      max-width: 1300px;
+      background-color: var(--minimal-yellow);
+    }
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 700;
+      font-size: 1.5rem;
+      color: var(--primary);
+    }
+    .nav-links {
+      display: flex;
+      gap: 25px;
+    }
+    .nav-links a {
+      text-decoration: none;
+      color: var(--dark);
+      font-weight: 500;
+      transition: 0.3s;
+      padding: 8px 15px;
+      border-radius: 50px;
+    }
+    .nav-links a:hover, .nav-links a.active {
+      background: var(--primary);
+      color: white;
+    }
+    .mobile-menu-btn {
+      display: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: var(--primary);
+    }
+    
     /* Header */
-    header{text-align:center;color:#fff;padding:40px 20px;}
+    header{text-align:center;padding:40px 20px;}
     header h1{font-size:3.2rem;font-weight:700;
-      background:linear-gradient(to right,#fff,#ffd1c4);
+      background:linear-gradient(to right,var(--primary),var(--secondary));
       -webkit-background-clip:text;-webkit-text-fill-color:transparent;}
-    header p{font-size:1.2rem;opacity:0.9;margin-top:10px;}
+    header p{font-size:1.2rem;color:var(--gray);margin-top:10px;}
+    
+    /* Homepage Hero Section */
+    .hero {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      padding: 40px 20px;
+      color: var(--dark);
+    }
+    .hero h2 {
+      font-size: 2.8rem;
+      margin-bottom: 20px;
+      color: var(--dark);
+    }
+    .hero p {
+      font-size: 1.2rem;
+      max-width: 700px;
+      margin-bottom: 30px;
+      color: var(--gray);
+    }
+    .hero-buttons {
+      display: flex;
+      gap: 15px;
+      margin-top: 20px;
+    }
+    .features {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 25px;
+      margin: 60px 0;
+    }
+    .feature-card {
+      background: var(--minimal-yellow);
+      border-radius: 15px;
+      padding: 25px;
+      text-align: center;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+      transition: 0.3s;
+    }
+    .feature-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 12px 25px rgba(0,0,0,0.1);
+    }
+    .feature-icon {
+      font-size: 2.5rem;
+      color: var(--primary);
+      margin-bottom: 15px;
+    }
+    .feature-card h3 {
+      margin-bottom: 15px;
+      color: var(--dark);
+    }
+    .feature-card p {
+      color: var(--gray);
+    }
     
     /* App Layout */
     .app-container{
@@ -35,14 +138,13 @@
     
     /* Card */
     .card{
-      background:rgba(255,255,255,0.9);
-      backdrop-filter:blur(10px);
+      background:var(--minimal-yellow);
       border-radius:20px;
       padding:25px;
-      box-shadow:0 12px 25px rgba(0,0,0,0.2);
+      box-shadow:0 12px 25px rgba(0,0,0,0.08);
       transition:.3s;
     }
-    .card:hover{transform:translateY(-5px);}
+    .card:hover{transform:translateY(-5px);box-shadow:0 15px 30px rgba(0,0,0,0.1);}
     .section-title{font-size:1.5rem;font-weight:600;color:var(--primary);margin-bottom:20px;}
     
     /* Upload Area */
@@ -50,9 +152,10 @@
       border:3px dashed var(--primary);border-radius:15px;
       padding:35px;text-align:center;cursor:pointer;
       transition:.3s;position:relative;
+      background-color: rgba(255, 255, 255, 0.7);
     }
     .upload-area i{font-size:60px;color:var(--primary);}
-    .upload-area:hover{background:var(--warm-light);border-color:var(--secondary);}
+    .upload-area:hover{background:rgba(255, 255, 255, 0.9);border-color:var(--secondary);}
     
     /* Buttons */
     .btn{display:inline-block;padding:12px 25px;margin:10px 5px;
@@ -60,14 +163,16 @@
       font-weight:500;cursor:pointer;transition:.3s;}
     .btn:hover{background:var(--secondary);transform:translateY(-2px);}
     .btn-secondary{background:var(--accent);}
-    .btn-secondary:hover{background:#3cb054;}
+    .btn-secondary:hover{background:#F57C00;}
+    .btn-scan{background:var(--scan-btn);}
+    .btn-scan:hover{background:#E64A19;}
     .btn:disabled{background:#ccc;cursor:not-allowed;}
     .btn:disabled:hover{transform:none;}
     
     /* Nutrition */
     .results-content{text-align:center;}
     .food-image{width:90%;max-width:280px;border-radius:15px;margin:0 auto 15px;
-      box-shadow:0 8px 20px rgba(0,0,0,0.15);}
+      box-shadow:0 8px 20px rgba(0,0,0,0.1);}
     .food-name{font-size:1.8rem;margin:10px 0;color:var(--dark);}
     .calorie-display{font-size:3rem;font-weight:700;color:var(--primary);}
     .progress-bar{height:8px;background:#eee;border-radius:5px;margin:10px 0;}
@@ -86,11 +191,11 @@
       margin-top: 20px;
     }
     .nutrition-card {
-      background: var(--warm-light);
+      background: rgba(255, 255, 255, 0.7);
       border-radius: 12px;
       padding: 15px;
       text-align: center;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      box-shadow: 0 4px 8px rgba(0,0,0,0.05);
     }
     .nutrition-card h4 {
       color: var(--primary);
@@ -114,20 +219,20 @@
     
     /* Food Database */
     .food-database{grid-column:span 2;
-      background:rgba(255,255,255,0.9);backdrop-filter:blur(10px);
+      background:var(--minimal-yellow);
       border-radius:20px;padding:25px;margin-top:20px;}
     .food-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:20px;}
-    .food-item{background:#f9f9f9;border-radius:15px;padding:15px;text-align:center;transition:.3s;cursor:pointer;}
-    .food-item:hover{transform:translateY(-5px);box-shadow:0 8px 18px rgba(0,0,0,0.15);}
+    .food-item{background:rgba(255, 255, 255, 0.7);border-radius:15px;padding:15px;text-align:center;transition:.3s;cursor:pointer;}
+    .food-item:hover{transform:translateY(-5px);box-shadow:0 8px 18px rgba(0,0,0,0.1);}
     .food-item img{width:100%;height:120px;object-fit:cover;border-radius:10px;margin-bottom:8px;}
     .food-item h4{color:var(--primary);}
     .food-item p{color:var(--gray);}
     
     /* History */
-    .history-section{background:rgba(255,255,255,0.9);backdrop-filter:blur(10px);
+    .history-section{background:var(--minimal-yellow);
       border-radius:20px;padding:25px;margin-top:30px;}
     .history-items{display:flex;gap:20px;flex-wrap:wrap;}
-    .history-item{flex:1;min-width:200px;background:#fafafa;border-radius:15px;padding:15px;text-align:center;}
+    .history-item{flex:1;min-width:200px;background:rgba(255, 255, 255, 0.7);border-radius:15px;padding:15px;text-align:center;}
     .history-item img{width:100%;height:120px;object-fit:cover;border-radius:10px;margin-bottom:10px;}
     
     /* Camera Modal */
@@ -144,6 +249,29 @@
       border-radius:50%;animation:spin 1s linear infinite;margin:0 auto;}
     @keyframes spin{0%{transform:rotate(0deg);}100%{transform:rotate(360deg);}}
     
+    /* About Section */
+    .about-section {
+      background: var(--minimal-yellow);
+      border-radius: 20px;
+      padding: 40px;
+      margin: 40px 0;
+    }
+    .about-content {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 30px;
+      align-items: center;
+    }
+    .about-text h2 {
+      color: var(--primary);
+      margin-bottom: 20px;
+    }
+    .about-image img {
+      width: 100%;
+      border-radius: 15px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+    }
+    
     /* Footer */
     footer{background:var(--warm-dark);color:#ccc;padding:40px 20px;margin-top:40px;}
     .footer-content{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:30px;}
@@ -158,108 +286,249 @@
     .footer-links a{color:#aaa;text-decoration:none;font-size:0.85rem;}
     .footer-links a:hover{color:#fff;text-decoration:underline;}
     
+    /* Page Sections */
+    .page-section {
+      display: none;
+    }
+    .page-section.active {
+      display: block;
+    }
+    
     @media(max-width:900px){
       .app-container{grid-template-columns:1fr;}
       .food-database{grid-column:1;}
       .nutrition-grid{grid-template-columns:1fr;}
+      .features{grid-template-columns:1fr;}
+      .about-content{grid-template-columns:1fr;}
+      .nav-links {
+        display: none;
+        position: absolute;
+        top: 80px;
+        left: 0;
+        right: 0;
+        background: var(--minimal-yellow);
+        flex-direction: column;
+        padding: 20px;
+        border-radius: 0 0 15px 15px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+      }
+      .nav-links.active {
+        display: flex;
+      }
+      .mobile-menu-btn {
+        display: block;
+      }
     }
   </style>
 </head>
 <body>
+  <!-- Navigation -->
+  <nav class="navbar">
+    <div class="logo">
+      <i class="fas fa-apple-alt"></i>
+      <span>NutriScan Pro</span>
+    </div>
+    <div class="nav-links" id="nav-links">
+      <a href="#home" class="nav-link active" data-section="home">Home</a>
+      <a href="#calorie-counter" class="nav-link" data-section="calorie-counter">Calorie Counter</a>
+      <a href="#food-database" class="nav-link" data-section="food-database">Food Database</a>
+      <a href="#about" class="nav-link" data-section="about">About</a>
+    </div>
+    <div class="mobile-menu-btn" id="mobile-menu-btn">
+      <i class="fas fa-bars"></i>
+    </div>
+  </nav>
+
   <div class="container">
-    <header>
-      <h1>NutriScan Pro</h1>
-      <p>Take a photo of your food and instantly get detailed calorie information</p>
-    </header>
+    <!-- Home Section -->
+    <section id="home" class="page-section active">
+      <header>
+        <h1>NutriScan Pro</h1>
+        <p>AI-powered food recognition to help you track your nutrition effortlessly</p>
+      </header>
 
-    <div class="app-container">
-      <!-- Upload -->
-      <div class="card">
-        <h2 class="section-title">Upload Food Photo</h2>
-        <div class="upload-area" id="upload-area">
-          <i class="fas fa-camera"></i>
-          <h3>Click or drag & drop to upload</h3>
-          <p>Supported formats: JPG, PNG, WEBP</p>
-          <input type="file" id="file-input" accept="image/*" style="display:none;">
-        </div>
-        <div class="loading" id="upload-loading">
-          <div class="loading-spinner"></div>
-          <p>Analyzing your food...</p>
-        </div>
-        <div style="text-align:center;">
-          <button class="btn" id="camera-btn"><i class="fas fa-camera"></i> Use Camera</button>
-          <button class="btn btn-secondary" id="analyze-btn" disabled><i class="fas fa-search"></i> Analyze Food</button>
+      <div class="hero">
+        <h2>Discover What's in Your Food Instantly</h2>
+        <p>Take a photo of your meal and get detailed nutritional information including calories, protein, carbs, fats, vitamins, and minerals.</p>
+        <div class="hero-buttons">
+          <button class="btn btn-scan" onclick="showSection('calorie-counter')">
+            <i class="fas fa-camera"></i> Scan Food Now
+          </button>
+          <button class="btn btn-secondary" onclick="showSection('food-database')">
+            <i class="fas fa-database"></i> Browse Foods
+          </button>
         </div>
       </div>
 
-      <!-- Nutrition -->
-      <div class="card">
-        <h2 class="section-title">Nutrition Information</h2>
-        <div class="results-content">
-          <img src="https://via.placeholder.com/300x200/ff7e5f/ffffff?text=Upload+Food+Photo" class="food-image" id="food-image">
-          <h3 class="food-name" id="food-name">Food Name</h3>
-          <div class="calorie-display" id="calorie-display">0</div>
-          <div class="progress-bar"><div class="progress" id="calorie-progress"></div></div>
-          <p>Daily Value: <span id="daily-value">0%</span></p>
-          
-          <!-- Enhanced Nutrition Information -->
-          <div class="nutrition-grid">
-            <div class="nutrition-card">
-              <h4>Protein</h4>
-              <div class="value" id="protein-value">0</div>
-              <div class="unit">grams</div>
-              <div class="daily-value">10% of daily need</div>
-            </div>
-            <div class="nutrition-card">
-              <h4>Carbs</h4>
-              <div class="value" id="carbs-value">0</div>
-              <div class="unit">grams</div>
-              <div class="daily-value">8% of daily need</div>
-            </div>
-            <div class="nutrition-card">
-              <h4>Fat</h4>
-              <div class="value" id="fat-value">0</div>
-              <div class="unit">grams</div>
-              <div class="daily-value">5% of daily need</div>
-            </div>
-            <div class="nutrition-card">
-              <h4>Fiber</h4>
-              <div class="value" id="fiber-value">0</div>
-              <div class="unit">grams</div>
-              <div class="daily-value">12% of daily need</div>
-            </div>
+      <div class="features">
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="fas fa-camera"></i>
           </div>
-          
-          <div class="nutrition-facts">
-            <h3>Detailed Nutrition Facts</h3>
-            <div class="nutri-row"><span>Sugar</span><span id="sugar-value">0g</span></div>
-            <div class="nutri-row"><span>Sodium</span><span id="sodium-value">0mg</span></div>
-            <div class="nutri-row"><span>Potassium</span><span id="potassium-value">0mg</span></div>
-            <div class="nutri-row"><span>Cholesterol</span><span id="cholesterol-value">0mg</span></div>
-            <div class="nutri-row"><span>Vitamin A</span><span id="vitamin-a-value">0%</span></div>
-            <div class="nutri-row"><span>Vitamin C</span><span id="vitamin-c-value">0%</span></div>
-            <div class="nutri-row"><span>Calcium</span><span id="calcium-value">0%</span></div>
-            <div class="nutri-row"><span>Iron</span><span id="iron-value">0%</span></div>
+          <h3>AI-Powered Scanning</h3>
+          <p>Our advanced AI technology recognizes thousands of foods from your photos.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="fas fa-chart-pie"></i>
+          </div>
+          <h3>Detailed Nutrition</h3>
+          <p>Get comprehensive nutritional breakdowns including macros and micronutrients.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="fas fa-history"></i>
+          </div>
+          <h3>Track Your History</h3>
+          <p>Monitor your eating habits over time with your personal scan history.</p>
+        </div>
+      </div>
+
+      <div class="about-section">
+        <div class="about-content">
+          <div class="about-text">
+            <h2>Why Choose NutriScan Pro?</h2>
+            <p>NutriScan Pro uses cutting-edge artificial intelligence to analyze food images and provide accurate nutritional information. Whether you're tracking calories, monitoring macronutrients, or just curious about what's in your food, our app makes it simple and intuitive.</p>
+            <p>With a database of thousands of foods and the ability to learn from user inputs, NutriScan Pro gets smarter over time, providing you with increasingly accurate results.</p>
+            <button class="btn btn-scan" onclick="showSection('calorie-counter')">
+              Get Started Now
+            </button>
+          </div>
+          <div class="about-image">
+            <img src="https://images.unsplash.com/photo-1490818387583-1baba5e638af?w=600" alt="Healthy food selection">
           </div>
         </div>
       </div>
-    </div>
+    </section>
 
-    <!-- Food Database -->
-    <div class="food-database">
-      <h2 class="section-title">Food Database</h2>
-      <div class="food-grid" id="food-database-grid">
-        <!-- Food items will be populated by JavaScript -->
-      </div>
-    </div>
+    <!-- Calorie Counter Section -->
+    <section id="calorie-counter" class="page-section">
+      <header>
+        <h1>Food Calorie Counter</h1>
+        <p>Upload or take a photo of your food to analyze its nutritional content</p>
+      </header>
 
-    <!-- History -->
-    <div class="history-section">
-      <h2 class="section-title">Recently Scanned Foods</h2>
-      <div class="history-items" id="history-items">
-        <!-- History items will be populated by JavaScript -->
+      <div class="app-container">
+        <!-- Upload -->
+        <div class="card">
+          <h2 class="section-title">Upload Food Photo</h2>
+          <div class="upload-area" id="upload-area">
+            <i class="fas fa-camera"></i>
+            <h3>Click or drag & drop to upload</h3>
+            <p>Supported formats: JPG, PNG, WEBP</p>
+            <input type="file" id="file-input" accept="image/*" style="display:none;">
+          </div>
+          <div class="loading" id="upload-loading">
+            <div class="loading-spinner"></div>
+            <p>Analyzing your food...</p>
+          </div>
+          <div style="text-align:center;">
+            <button class="btn" id="camera-btn"><i class="fas fa-camera"></i> Use Camera</button>
+            <button class="btn btn-scan" id="analyze-btn" disabled><i class="fas fa-search"></i> Analyze Food</button>
+          </div>
+        </div>
+
+        <!-- Nutrition -->
+        <div class="card">
+          <h2 class="section-title">Nutrition Information</h2>
+          <div class="results-content">
+            <img src="https://via.placeholder.com/300x200/4CAF50/ffffff?text=Upload+Food+Photo" class="food-image" id="food-image">
+            <h3 class="food-name" id="food-name">Food Name</h3>
+            <div class="calorie-display" id="calorie-display">0</div>
+            <div class="progress-bar"><div class="progress" id="calorie-progress"></div></div>
+            <p>Daily Value: <span id="daily-value">0%</span></p>
+            
+            <!-- Enhanced Nutrition Information -->
+            <div class="nutrition-grid">
+              <div class="nutrition-card">
+                <h4>Protein</h4>
+                <div class="value" id="protein-value">0</div>
+                <div class="unit">grams</div>
+                <div class="daily-value">10% of daily need</div>
+              </div>
+              <div class="nutrition-card">
+                <h4>Carbs</h4>
+                <div class="value" id="carbs-value">0</div>
+                <div class="unit">grams</div>
+                <div class="daily-value">8% of daily need</div>
+              </div>
+              <div class="nutrition-card">
+                <h4>Fat</h4>
+                <div class="value" id="fat-value">0</div>
+                <div class="unit">grams</div>
+                <div class="daily-value">5% of daily need</div>
+              </div>
+              <div class="nutrition-card">
+                <h4>Fiber</h4>
+                <div class="value" id="fiber-value">0</div>
+                <div class="unit">grams</div>
+                <div class="daily-value">12% of daily need</div>
+              </div>
+            </div>
+            
+            <div class="nutrition-facts">
+              <h3>Detailed Nutrition Facts</h3>
+              <div class="nutri-row"><span>Sugar</span><span id="sugar-value">0g</span></div>
+              <div class="nutri-row"><span>Sodium</span><span id="sodium-value">0mg</span></div>
+              <div class="nutri-row"><span>Potassium</span><span id="potassium-value">0mg</span></div>
+              <div class="nutri-row"><span>Cholesterol</span><span id="cholesterol-value">0mg</span></div>
+              <div class="nutri-row"><span>Vitamin A</span><span id="vitamin-a-value">0%</span></div>
+              <div class="nutri-row"><span>Vitamin C</span><span id="vitamin-c-value">0%</span></div>
+              <div class="nutri-row"><span>Calcium</span><span id="calcium-value">0%</span></div>
+              <div class="nutri-row"><span>Iron</span><span id="iron-value">0%</span></div>
+            </div>
+          </div>
+        </div>
       </div>
-    </div>
+
+      <!-- History -->
+      <div class="history-section">
+        <h2 class="section-title">Recently Scanned Foods</h2>
+        <div class="history-items" id="history-items">
+          <!-- History items will be populated by JavaScript -->
+        </div>
+      </div>
+    </section>
+
+    <!-- Food Database Section -->
+    <section id="food-database" class="page-section">
+      <header>
+        <h1>Food Database</h1>
+        <p>Browse our extensive database of foods and their nutritional information</p>
+      </header>
+
+      <!-- Food Database -->
+      <div class="food-database">
+        <h2 class="section-title">Popular Foods</h2>
+        <div class="food-grid" id="food-database-grid">
+          <!-- Food items will be populated by JavaScript -->
+        </div>
+      </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="page-section">
+      <header>
+        <h1>About NutriScan Pro</h1>
+        <p>Learn about our mission and how our technology works</p>
+      </header>
+
+      <div class="about-section">
+        <div class="about-content">
+          <div class="about-text">
+            <h2>Our Mission</h2>
+            <p>At NutriScan Pro, we believe that understanding what's in your food should be simple and accessible to everyone. Our mission is to empower people to make informed dietary choices through the power of artificial intelligence and computer vision.</p>
+            <p>Whether you're managing a specific health condition, working toward fitness goals, or simply curious about nutrition, NutriScan Pro provides the tools you need to understand your food better.</p>
+            <h2>How It Works</h2>
+            <p>Our advanced AI algorithms analyze the visual characteristics of food images to identify ingredients and portion sizes. This information is then cross-referenced with our extensive nutritional database to provide accurate calorie and nutrient estimates.</p>
+            <p>The more you use NutriScan Pro, the smarter it gets - learning from corrections and expanding its knowledge of foods from around the world.</p>
+          </div>
+          <div class="about-image">
+            <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=600" alt="Food variety">
+          </div>
+        </div>
+      </div>
+    </section>
   </div>
 
   <!-- Camera Modal -->
@@ -270,7 +539,7 @@
         <video id="video-element" autoplay playsinline></video>
       </div>
       <div class="camera-controls">
-        <button class="btn" id="capture-btn"><i class="fas fa-camera"></i> Capture</button>
+        <button class="btn btn-scan" id="capture-btn"><i class="fas fa-camera"></i> Capture</button>
         <button class="btn btn-secondary" id="close-camera"><i class="fas fa-times"></i> Close</button>
       </div>
     </div>
@@ -291,11 +560,10 @@
       </div>
       <div class="footer-column">
         <h3>Quick Links</h3>
-        <a href="#">Home</a>
-        <a href="#">Database</a>
-        <a href="#">Pricing</a>
-        <a href="#">Blog</a>
-        <a href="#">About Us</a>
+        <a href="#" onclick="showSection('home')">Home</a>
+        <a href="#" onclick="showSection('calorie-counter')">Calorie Counter</a>
+        <a href="#" onclick="showSection('food-database')">Database</a>
+        <a href="#" onclick="showSection('about')">About Us</a>
       </div>
       <div class="footer-column">
         <h3>Support</h3>
@@ -314,7 +582,7 @@
     </div>
     
     <div class="footer-links">
-      <a href="#">About Us</a>
+      <a href="#" onclick="showSection('about')">About Us</a>
       <a href="#">Blog</a>
       <a href="#">Terms & Conditions</a>
       <a href="#">Contact Us</a>
@@ -336,6 +604,8 @@
     const captureBtn = document.getElementById('capture-btn');
     const closeCamera = document.getElementById('close-camera');
     const uploadLoading = document.getElementById('upload-loading');
+    const navLinks = document.getElementById('nav-links');
+    const mobileMenuBtn = document.getElementById('mobile-menu-btn');
     
     // Nutrition display elements
     const foodImage = document.getElementById('food-image');
@@ -539,21 +809,58 @@
       // Camera controls
       captureBtn.addEventListener('click', captureImage);
       closeCamera.addEventListener('click', closeCameraModal);
+      
+      // Navigation
+      document.querySelectorAll('.nav-link').forEach(link => {
+        link.addEventListener('click', (e) => {
+          e.preventDefault();
+          const section = link.getAttribute('data-section');
+          showSection(section);
+          
+          // Update active class
+          document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+          link.classList.add('active');
+          
+          // Close mobile menu if open
+          navLinks.classList.remove('active');
+        });
+      });
+      
+      // Mobile menu toggle
+      mobileMenuBtn.addEventListener('click', () => {
+        navLinks.classList.toggle('active');
+      });
+    }
+    
+    // Show a specific section
+    function showSection(sectionId) {
+      // Hide all sections
+      document.querySelectorAll('.page-section').forEach(section => {
+        section.classList.remove('active');
+      });
+      
+      // Show the requested section
+      document.getElementById(sectionId).classList.add('active');
+      
+      // Scroll to top
+      window.scrollTo(0, 0);
     }
     
     // Handle image upload
     function handleImageUpload(file) {
       if (!file.type.match('image.*')) {
-        alert('Please upload an image file');
+        alert('Please upload an image file.');
         return;
       }
       
       const reader = new FileReader();
+      
       reader.onload = (e) => {
         currentImage = e.target.result;
         foodImage.src = currentImage;
         analyzeBtn.disabled = false;
       };
+      
       reader.readAsDataURL(file);
     }
     
@@ -561,23 +868,28 @@
     function openCamera() {
       cameraModal.style.display = 'flex';
       
-      // Access camera
-      navigator.mediaDevices.getUserMedia({ video: true })
-        .then(stream => {
-          videoElement.srcObject = stream;
-        })
-        .catch(error => {
-          console.error('Error accessing camera:', error);
-          alert('Unable to access camera. Please check permissions.');
-          closeCameraModal();
-        });
+      // Access the camera
+      if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+        navigator.mediaDevices.getUserMedia({ video: true })
+          .then(stream => {
+            videoElement.srcObject = stream;
+          })
+          .catch(error => {
+            console.error('Camera error:', error);
+            alert('Unable to access camera: ' + error.message);
+            closeCameraModal();
+          });
+      } else {
+        alert('Your browser does not support camera access.');
+        closeCameraModal();
+      }
     }
     
     // Close camera modal
     function closeCameraModal() {
       cameraModal.style.display = 'none';
       
-      // Stop camera stream
+      // Stop the camera stream
       if (videoElement.srcObject) {
         const tracks = videoElement.srcObject.getTracks();
         tracks.forEach(track => track.stop());
@@ -590,7 +902,7 @@
       const canvas = document.createElement('canvas');
       canvas.width = videoElement.videoWidth;
       canvas.height = videoElement.videoHeight;
-      canvas.getContext('2d').drawImage(videoElement, 0, 0);
+      canvas.getContext('2d').drawImage(videoElement, 0, 0, canvas.width, canvas.height);
       
       currentImage = canvas.toDataURL('image/png');
       foodImage.src = currentImage;
@@ -607,38 +919,37 @@
       uploadLoading.style.display = 'block';
       analyzeBtn.disabled = true;
       
-      // Simulate API call with timeout
+      // Simulate AI processing
       setTimeout(() => {
-        // Randomly select a food item from database
-        const randomFood = foodDatabase[Math.floor(Math.random() * foodDatabase.length)];
-        
-        // Update UI with food data
-        displayFoodData(randomFood);
-        
-        // Add to history
-        addToHistory(randomFood);
-        
         // Hide loading
         uploadLoading.style.display = 'none';
         analyzeBtn.disabled = false;
+        
+        // Randomly select a food from database for simulation
+        const randomFood = foodDatabase[Math.floor(Math.random() * foodDatabase.length)];
+        
+        // Update UI with food data
+        updateNutritionDisplay(randomFood);
+        
+        // Add to history
+        addToHistory(randomFood);
       }, 2000);
     }
     
-    // Display food data
-    function displayFoodData(food) {
+    // Update nutrition display
+    function updateNutritionDisplay(food) {
       foodName.textContent = food.name;
       calorieDisplay.textContent = food.calories;
+      calorieProgress.style.width = `${Math.min(food.calories / 2000 * 100, 100)}%`;
+      dailyValue.textContent = `${Math.round(food.calories / 2000 * 100)}%`;
       
-      // Calculate daily value percentage (based on 2000 calorie diet)
-      const dailyPercent = Math.min(Math.round((food.calories / 2000) * 100), 100);
-      dailyValue.textContent = `${dailyPercent}%`;
-      calorieProgress.style.width = `${dailyPercent}%`;
-      
-      // Update nutrition facts
+      // Update nutrition values
       proteinValue.textContent = food.protein;
       carbsValue.textContent = food.carbs;
       fatValue.textContent = food.fat;
       fiberValue.textContent = food.fiber;
+      
+      // Update detailed nutrition
       sugarValue.textContent = `${food.sugar}g`;
       sodiumValue.textContent = `${food.sodium}mg`;
       potassiumValue.textContent = `${food.potassium}mg`;
@@ -654,13 +965,13 @@
       // Add to beginning of history array
       scanHistory.unshift({
         ...food,
-        timestamp: new Date().toISOString(),
-        image: currentImage
+        date: new Date().toLocaleDateString(),
+        time: new Date().toLocaleTimeString()
       });
       
       // Keep only last 6 items
       if (scanHistory.length > 6) {
-        scanHistory.pop();
+        scanHistory = scanHistory.slice(0, 6);
       }
       
       // Save to localStorage
@@ -668,6 +979,28 @@
       
       // Update UI
       populateHistory();
+    }
+    
+    // Populate history
+    function populateHistory() {
+      historyItems.innerHTML = '';
+      
+      scanHistory.forEach(item => {
+        const historyItem = document.createElement('div');
+        historyItem.className = 'history-item';
+        historyItem.innerHTML = `
+          <img src="${item.image}" alt="${item.name}">
+          <h4>${item.name}</h4>
+          <p>${item.calories} calories</p>
+          <p><small>Scanned on ${item.date}</small></p>
+        `;
+        
+        historyItem.addEventListener('click', () => {
+          updateNutritionDisplay(item);
+        });
+        
+        historyItems.appendChild(historyItem);
+      });
     }
     
     // Populate food database
@@ -684,49 +1017,15 @@
         `;
         
         foodItem.addEventListener('click', () => {
-          displayFoodData(food);
-          foodImage.src = food.image;
-          currentImage = food.image;
+          updateNutritionDisplay(food);
+          showSection('calorie-counter');
         });
         
         foodDatabaseGrid.appendChild(foodItem);
       });
     }
     
-    // Populate history
-    function populateHistory() {
-      historyItems.innerHTML = '';
-      
-      if (scanHistory.length === 0) {
-        historyItems.innerHTML = '<p>No recent scans. Analyze some food to see them here!</p>';
-        return;
-      }
-      
-      scanHistory.forEach(item => {
-        const historyItem = document.createElement('div');
-        historyItem.className = 'history-item';
-        
-        const date = new Date(item.timestamp);
-        const formattedDate = `${date.toLocaleDateString()} ${date.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}`;
-        
-        historyItem.innerHTML = `
-          <img src="${item.image}" alt="${item.name}">
-          <h4>${item.name}</h4>
-          <p>${item.calories} calories</p>
-          <small>${formattedDate}</small>
-        `;
-        
-        historyItem.addEventListener('click', () => {
-          displayFoodData(item);
-          foodImage.src = item.image;
-          currentImage = item.image;
-        });
-        
-        historyItems.appendChild(historyItem);
-      });
-    }
-    
-    // Initialize the app when DOM is loaded
+    // Initialize the app when the DOM is loaded
     document.addEventListener('DOMContentLoaded', init);
   </script>
 </body>
